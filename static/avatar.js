@@ -121,7 +121,8 @@ loader.load(vrmPath, (gltf) => {
     window.currentVrm = vrm;
     vrm.scene.rotation.y = Math.PI; 
     vrm.scene.position.x = 0.0; 
-    vrm.scene.scale.set(0.9, 0.9, 0.9);
+    // 初期表示スケールを既定値から1.5倍に増加
+    vrm.scene.scale.set(1.35, 1.35, 1.35);
     vrm.scene.position.y = -0.15; 
     document.getElementById('system-status').innerText = "システム起動準備完了（スペースキーで起動）";
 });

@@ -103,6 +103,7 @@ function saveSettings() {
             voice:     document.getElementById('param-voice')?.value,
             mirror:    document.getElementById('param-mirror')?.value,
             camera:    document.getElementById('param-camera')?.value,
+            chatFontScale: document.getElementById('param-chat-font-scale')?.value,
         };
         localStorage.setItem(LS_KEY, JSON.stringify(d));
     } catch(_) {}
@@ -125,10 +126,12 @@ function loadSettings() {
         set('param-voice',      d.voice);
         set('param-mirror',     d.mirror);
         set('param-camera',     d.camera);
+        set('param-chat-font-scale', d.chatFontScale);
         // Refresh all displayed values
         updateCSSFilters();
         syncVrmParams();
         updateRatePitchLabels();
+        updateChatFontScale();
         applyMirrorValue(d.mirror);
     } catch(_) {}
 }
@@ -719,6 +722,22 @@ document.getElementById('param-camera').addEventListener('change', () => sendSet
 document.getElementById('param-rate').addEventListener('change', () => sendSettingsToServer());
 document.getElementById('param-pitch').addEventListener('change', () => sendSettingsToServer());
 document.getElementById('param-voice').addEventListener('change', () => sendSettingsToServer());
+
+// ── Chat Font Size ────────────────────────────────────────────
+function updateChatFontScale() {
+    const scaleInput = document.getElementById('param-chat-font-scale');
+    if (!scaleInput) return;
+    const scalePercent = parseInt(scaleInput.value);
+    const scaleFactor = scalePercent / 100;
+    document.documentElement.style.setProperty('--chat-font-scale', scaleFactor);
+    document.getElementById('val-chat-font-scale').innerText = scalePercent + '%';
+    saveSettings();
+}
+
+const chatFontScaleInput = document.getElementById('param-chat-font-scale');
+if (chatFontScaleInput) {
+    chatFontScaleInput.addEventListener('input', updateChatFontScale);
+}
 
 // ── Text Input Form ───────────────────────────────────────────
 function initTextInputForm() {
